@@ -16,25 +16,34 @@
 				var query = new Keen.Query("average", {
 					eventCollection: "Test 2",
 					interval: "minutely",
-<<<<<<< HEAD
-					targetProperty: "BoardSensor1.temp",
-					timeframe: "this_2_hours",
-=======
 					targetProperty: "RemoteSensor1.temp",
 					timeframe: "this_60_minutes",
->>>>>>> refs/remotes/origin/gh-pages
 					timezone: "UTC"
 				});
 				
-				client.draw(query, document.getElementById("my_chart"), {
-					// Custom configuration here
-					chartType: "linechart",
-<<<<<<< HEAD
-					title: "Board Temperatures"
-=======
-					title: "Remote Sensor Temperatures (1 hrs)"
->>>>>>> refs/remotes/origin/gh-pages
-				});
+				var chart = new Keen.Dataviz()
+          .el(document.getElementById("chart-wrapper"))
+          .chartType("linechart")
+          .prepare(); // start spinner
+
+        var req = client.run(query, function(err, res){
+          if (err) {
+            // Display the API error
+            chart.error(err.message);
+          }
+          else {
+            // Handle the response
+            chart
+              .parseRequest(this)
+              .title("Remote Sensor Temps (30 second auto-updates)")
+              .render();
+          }
+        });
+
+        // Re-run and refresh every half minute...
+        setInterval(function() {
+          req.refresh();
+        }, 1000 * 60 * 0.5);
 				
 			});
 
@@ -42,6 +51,6 @@
   </head>
 	<body>
     <!--Div that will hold the chart-->
-    <div id="my_chart"></div>
+    <div id="chart-wrapper"></div>
   </body>
 </html>
