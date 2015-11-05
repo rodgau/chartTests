@@ -32,6 +32,8 @@
 				var chart = new Keen.Dataviz()
           .el(document.getElementById("chart-wrapper"))
           .chartType("linechart")
+          .height(750)
+          .width(1000)
           .prepare(); // start spinner
           
         var req = client.run([Remote1, Board1], function(err, res){ // run the 2 queries
@@ -58,7 +60,7 @@
               if (i == result1.length-1) { // chart the data
               chart
                 .parseRawData({ result: data })
-                .title("Remote & Board Sensor Temps (30 second auto-updates)")
+                .title("Remote & Board Sensor Temps (30 second auto-updates)")                .
                 .render();
               }
               i++;
@@ -75,6 +77,6 @@
   </head>
 	<body>
     <!--Div that will hold the chart-->
-    <div id="chart-wrapper" style="width: 1000px","height: 800px"></div>
+    <div id="chart-wrapper"></div>
   </body>
 </html>
