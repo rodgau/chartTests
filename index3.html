@@ -34,7 +34,7 @@
           .chartType("linechart")
           //.prepare(); // start spinner
           
-	chart.attributes({ title: "My Title!", width: 800, height: 600 });
+	chart.attributes({ title: "Remote and Board Sensors (30 second auto-refresh)", width: 900, height: 450 });
 	chart.prepare(); // start spinner
 	
         var req = client.run([Remote1, Board1], function(err, res){ // run the 2 queries
@@ -54,8 +54,8 @@
               data[i]={ // format the data so it can be charted
                   timeframe: result1[i]["timeframe"],
                   value: [
-                      { category: "Remote", result: result1[i]["value"] },
-                      { category: "Board", result: result2[i]["value"] }
+                      { category: "Remote °C", result: result1[i]["value"] },
+                      { category: "Board °C", result: result2[i]["value"] }
                   ]
               }
               if (i == result1.length-1) { // chart the data
