@@ -31,9 +31,8 @@
 				
 				var chart = new Keen.Dataviz()
           .el(document.getElementById("chart-wrapper"))
+          .height(500)
           .chartType("linechart")
-          .height(750)
-          .width(1000)
           .prepare(); // start spinner
           
         var req = client.run([Remote1, Board1], function(err, res){ // run the 2 queries
