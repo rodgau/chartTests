@@ -31,10 +31,12 @@
 				
 				var chart = new Keen.Dataviz()
           .el(document.getElementById("chart-wrapper"))
-          .width(800)
           .chartType("linechart")
-          .prepare(); // start spinner
+          //.prepare(); // start spinner
           
+	chart.attributes({ title: "My Title!", width: 800, height: 600 });
+	chart.prepare(); // start spinner
+	
         var req = client.run([Remote1, Board1], function(err, res){ // run the 2 queries
           if (err) {
             // Display the API error
@@ -59,7 +61,7 @@
               if (i == result1.length-1) { // chart the data
               chart
                 .parseRawData({ result: data })
-                .title("Remote & Board Sensor Temps (30 second auto-updates)")
+                //.title("Remote & Board Sensor Temps (30 second auto-updates)")
                 .render();
               }
               i++;
