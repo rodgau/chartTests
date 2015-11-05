@@ -16,15 +16,15 @@
 				var query = new Keen.Query("average", {
 					eventCollection: "Test 2",
 					interval: "minutely",
-					targetProperty: "BoardSensor1.temp",
-					timeframe: "this_2_hours",
+					targetProperty: "RemoteSensor1.temp",
+					timeframe: "this_3_hours",
 					timezone: "UTC"
 				});
 				
 				client.draw(query, document.getElementById("my_chart"), {
 					// Custom configuration here
 					chartType: "linechart",
-					title: "Board Temperatures"
+					title: "Remote Sensor Temperatures (3 hrs)"
 				});
 				
 			});
@@ -33,6 +33,6 @@
   </head>
 	<body>
     <!--Div that will hold the chart-->
-    <div id="my_chart"></div>
+    <div id="my_chart" style="width: 600px","height: 300px"></div>
   </body>
 </html>
