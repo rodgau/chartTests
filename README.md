@@ -9,3 +9,4 @@ My github-pages page to test keen IO data visualizations of my 1-wire temperatur
 
 ##C3.js Charts
 - c3-1.html  Basic line graph
+- c3-2.html  using DataViz & chart auto-refreshes every 30 seconds
