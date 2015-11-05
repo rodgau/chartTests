@@ -1,0 +1,80 @@
+<html>
+  <head>
+		<script type="text/javascript">
+			!function(a,b){a("Keen","https://d26b395fwzu5fz.cloudfront.net/3.2.7/keen.min.js",b)}(function(a,b,c){var d,e,f;c["_"+a]={},c[a]=function(b){c["_"+a].clients=c["_"+a].clients||{},c["_"+a].clients[b.projectId]=this,this._config=b},c[a].ready=function(b){c["_"+a].ready=c["_"+a].ready||[],c["_"+a].ready.push(b)},d=["addEvent","setGlobalProperties","trackExternalLink","on"];for(var g=0;g<d.length;g++){var h=d[g],i=function(a){return function(){return this["_"+a]=this["_"+a]||[],this["_"+a].push(arguments),this}};c[a].prototype[h]=i(h)}e=document.createElement("script"),e.async=!0,e.src=b,f=document.getElementsByTagName("script")[0],f.parentNode.insertBefore(e,f)},this);
+		</script>
+		<script type="text/javascript">
+			var client = new Keen({
+				projectId: "53e30cc333e4061149000003",
+				readKey: "86e4bf9a678cace2f791e78efdb7b0e075c769fa26c67f6768a71111a972fc154c784e8a92871722bc8e020f29333a6e7758dda21884dfb146d230481a6e243842056e5c966611cb6f95bb6f290d298f65ccefb032dae704557b35ee42c9767dfb8064ec104321d56ef2c6205a915fa0"
+				
+			});
+			Keen.ready(function(){
+				var interval = "minutely"
+				var timeframe = "this_60_minutes"
+				
+				var Remote1 = new Keen.Query("average", {
+					eventCollection: "Test 2",
+					interval: interval,
+					targetProperty: "RemoteSensor1.temp",
+					timeframe: timeframe,
+					timezone: "UTC"
+				});
+				
+				var Board1 = new Keen.Query("average", {
+					eventCollection: "Test 2",
+					interval: interval,
+					targetProperty: "BoardSensor1.temp",
+					timeframe: timeframe,
+					timezone: "UTC"
+				});
+				
+				var chart = new Keen.Dataviz()
+          .el(document.getElementById("chart-wrapper"))
+          .chartType("linechart")
+          .prepare(); // start spinner
+          
+        var req = client.run([Remote1, Board1], function(err, res){ // run the 2 queries
+          if (err) {
+            // Display the API error
+            chart.error(err.message);
+          }
+          else {
+            // Handle the response
+            var result1 = res[0].result // data from first query
+            var result2 = res[1].result // data from second query
+            var data =[] // place for combined results
+            var i = 0
+            
+            while (i < result1.length) {
+      
+              data[i]={ // format the data so it can be charted
+                  timeframe: result1[i]["timeframe"],
+                  value: [
+                      { category: "Remote", result: result1[i]["value"] },
+                      { category: "Board", result: result2[i]["value"] }
+                  ]
+              }
+              if (i == result1.length-1) { // chart the data
+              chart
+                .parseRawData({ result: data })
+                .title("Remote & Board Sensor Temps (30 second auto-updates)")
+                .render();
+              }
+              i++;
+            }
+          }
+        });
+        // Re-run and refresh every half minute...
+        setInterval(function() {
+          req.refresh();
+        }, 1000 * 60 * 0.5);
+				
+			});
+    </script>
+  </head>
+	<body>
+    <!--Div that will hold the chart-->
+    <div id="chart-wrapper"></div>
+  </body>
+</html>
