@@ -23,29 +23,67 @@
 				
 				var chart = new Keen.Dataviz()
           .el(document.getElementById("chart-wrapper"))
-          .chartType("linechart")
-          .prepare(); // start spinner
+          .chartType("linechart");
+          
+	    //chart.attributes used for keen's chart settings (over-rides Google API)
+	    chart.attributes({
+	        title: "Remote Sensor (30 second auto-refresh)",
+	        width: 900,
+	        height: 450,
+	        titlePosition: 'out',
+	        titleTextStyle: {
+	            color: 'black',
+	            fontSize: 20
+	        }
+	    });
+	    //chart.chartOptions passes args directly to Google Charts API (or C3/Charts.js)
+	    chart.chartOptions({
+	        vAxis: {
+	            minValue: 20,
+        maxValue: 45,
+	            minorGridlines: {
+	                count: 5
+	            }
+	        },
+	        haxis: {
+	            title: 'Hello',
+	            titleTextStyle: {
+	                color: '#FF0000'
+	            }
+	        },
+	        vaxis: {
+	            title: 'Hello',
+	            titleTextStyle: {
+	                color: '#FF0000'
+	            }
+	        },
+	        explorer: {
+	            actions: ['dragToZoom', 'rightClickToReset'] 
+	        }
+	    });
 
-        var req = client.run(query, function(err, res){
-          if (err) {
-            // Display the API error
-            chart.error(err.message);
-          }
-          else {
-            // Handle the response
-            chart
-              .parseRequest(this)
-              .title("Remote Sensor Temps (30 second auto-updates)")
-              .render();
-          }
-        });
+	 	chart.prepare(); // start spinner
 
-        // Re-run and refresh every half minute...
-        setInterval(function() {
-          req.refresh();
-        }, 1000 * 60 * 0.5);
-				
-			});
+	    var req = client.run(query, function(err, res){
+	      if (err) {
+	        // Display the API error
+	        chart.error(err.message);
+	      }
+	      else {
+	        // Handle the response
+	        chart
+	          .parseRequest(this)
+	          .title("Remote Sensor Temps (30 second auto-updates)")
+	          .render();
+	      }
+	    });
+	
+	    // Re-run and refresh every half minute...
+	    setInterval(function() {
+	      req.refresh();
+	    }, 1000 * 60 * 0.5);
+			
+		});
 
     </script>
   </head>
